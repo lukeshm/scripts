@@ -1,18 +1,32 @@
 #!/usr/bin/python
+#############################################################
+#
+# Author : Lukesh Meshram
+# Date   : 15/01/2018
+# Purpose: Check-out tool after reboot/generic health-check
+# Tested : Linux RHEL 5.x onwards
+#
+#############################################################
 
+# Imports
 from subprocess import *
 import sys
 import os
 import shlex
 import platform
 
+# Variable declearation
+LOGDIR = '/var/tmp/diffcheck/'
+
+# Open devnull to stderr if required
+
 DEVNULL = open('/dev/null', 'w')
 
-if not platform.system() == 'Linux':
-	print "Non supported OS platform, please try it on Linux only, eixiting."
-	sys.exit(1)
-
-LOGDIR = '/var/tmp/diffcheck/'
+def platform_check():
+	if not platform.system() == 'Linux':
+		print "Non supported OS platform, please try it on Linux only, eixiting."
+		sys.exit(1)
+# Define array : command + value
 
 ALL_RESOURCES = {
 	"CMD_rpm" : "/usr/bin/rpm -qa | sort",
@@ -25,6 +39,9 @@ ALL_RESOURCES = {
 	"CMD_processes" : "/usr/bin/ps -ef | egrep 'docker|httpd|crond'",
 	"CMD_routes" : "/usr/bin/netstat -nr",
 		}
+
+
+# Function to create pre status of components (will be collecting vai cron)
 
 def collect_data(stage):
 	# Creating DIR for logs
@@ -39,6 +56,7 @@ def collect_data(stage):
 			print("IO error occured, please try again.")
 			sys.exit(1)
 
+# Compair the pre against current state and use sdiff
 
 def sdiff_fuction:
 	if os.direxists(LOGDIR):
