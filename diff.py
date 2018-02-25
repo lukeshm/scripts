@@ -26,7 +26,7 @@ def platform_check():
 	if not platform.system() == 'Linux':
 		print "Non supported OS platform, please try it on Linux only, eixiting."
 		sys.exit(1)
-# Define array : command + value
+# Define Dictonary : command + value
 
 ALL_RESOURCES = {
 	"CMD_rpm" : "/usr/bin/rpm -qa | sort",
