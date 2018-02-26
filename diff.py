@@ -40,7 +40,7 @@ ALL_RESOURCES = {
 	"CMD_routes" : "/usr/bin/netstat -nr",
 		}
 
-# nothing = os.system('clear')
+nothing = os.system('clear')
 
 # Function to create pre status of components (will be collecting vai cron)
 
@@ -68,9 +68,11 @@ def sdiff_fuction():
 				collect_data('current')
 				CMD_sdiff = '/usr/bin/sdiff -s -w 200 ' + filename_pre + " " + filename_current
 				if call(CMD_sdiff, shell=True, stdout=DEVNULL,stderr=DEVNULL) == 1:
-					print key + "\t\t\t\t\t" + "NOT OK"
+					#print key + "\t\t\t\t\t" + "NOT OK"
+					print '{0: <25}'.format(key) + "NOT OK"
 				else:
-					print key + "\t\t\t\t\t" + "    OK"
+					#print key + "\t\t\t\t\t" + "    OK"
+					print '{0: <25}'.format(key) + "OK"
 
 
 
