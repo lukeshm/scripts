@@ -40,34 +40,41 @@ ALL_RESOURCES = {
 	"CMD_routes" : "/usr/bin/netstat -nr",
 		}
 
+# nothing = os.system('clear')
 
 # Function to create pre status of components (will be collecting vai cron)
 
 def collect_data(stage):
 	# Creating DIR for logs
-	os.mkdir(LOGDIR)
+	#os.mkdir(LOGDIR)
 	# Loop to collect all pre/post date
 	for key, value in ALL_RESOURCES.items():
 		try:
 			filename = LOGDIR + key + "." + stage
         		with open(filename, 'w') as f:
-            			subprocess.Popen(shlex.split(value), stdout=f, stderr=DEVNULL).communicate()[0]
+            			Popen(shlex.split(value), stdout=f, stderr=DEVNULL).communicate()[0]
 		except IOError:
 			print("IO error occured, please try again.")
 			sys.exit(1)
 
 # Compair the pre against current state and use sdiff
 
-def sdiff_fuction:
-	if os.direxists(LOGDIR):
+def sdiff_fuction():
+	if os.path.exists(LOGDIR):
 		for key, value in ALL_RESOURCES.items():
-			filename_pre = LOGDIR + key + "." + pre
-			filename_current = LOGDIR + key + "." + current
+			filename_pre = LOGDIR + key + "." + 'pre'
+			filename_current = LOGDIR + key + "." + 'current'
 			if os.path.isfile(filename_pre):
-				collect_data(current)
+				collect_data('current')
 				CMD_sdiff = '/usr/bin/sdiff -s -w 200 ' + filename_pre + " " + filename_current
-				subprocess.Popen("
-				
-	
-	
+				if call(CMD_sdiff, shell=True, stdout=DEVNULL,stderr=DEVNULL) == 1:
+					print key + "\t\t\t\t\t" + "NOT OK"
+				else:
+					print key + "\t\t\t\t\t" + "    OK"
 
+
+
+if __name__ == "__main__":
+	platform_check()
+	collect_data('pre')
+	sdiff_fuction()
