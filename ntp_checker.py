@@ -16,13 +16,20 @@ import os
 from subprocess import *
 import datetime
 
-def display_date():
-        now = datetime.datetime.now()
-        timee = now.strftime("%Y-%m-%d %H:%M")
-        info = '[ INFO     ]: ' + timee
-        warn = '[ WARN\'g  ]: ' + timee
-        crit = '[ CRITICAL ]: ' + timee
-
+now = datetime.datetime.now()
+timee = now.strftime("%Y-%m-%d %H:%M")
+green  = '\033[32m'
+yellow = '\033[93m'
+red    = '\033[31m'
+normal = '\033[0m'
+info = timee + normal + green + ' [ INFO ]: ' + normal
+warn = timee + normal + yellow + ' [ WARN\'g ]: ' + normal
+crit = timee + normal + red + ' [ ERROR ]: ' + normal
+os.system('clear')
+warning_value = 50
+critical_value = 100
+# Printing header
+print "\n>=====Warning 50ms======> NTP Offset Checker - UBS <======Critical 100ms====<\n"
 
 # Function to check if current distrubution and Release version is-line to estate (RHEL 6/7 & Solaris 10)
 def platform_check():
@@ -32,35 +39,30 @@ def platform_check():
                         if (rhel == '7' or rhel == '6'):
                                 action = 'go'
                         else:
-                                print "Unsupport RHEL version:" + rhel + ",exiting"
+                                print crit + "Unsupport RHEL version: " + red + rhel + normal + ",exiting\n"
                                 sys.exit(1)
                 else:
-                        print "Unsupport Linux distrubution:" + platform.dist()[0] + " ,exiting"
+                        print crit + "Unsupport Linux distrubution: " + red + platform.dist()[0] + normal + " ,exiting\n"
                         sys.exit(1)
         else:
                 if platform.system() == 'SunOS':
                         if platform.release().split('.')[1] == '10':
                                 action = 'go'
                         else:
-                                print "Unspport SunOS version: " + platform.release().split('.')[1] + ", exiting"
+                                print crit + "Unspport SunOS version: " + platform.release().split('.')[1] + ", exiting\n"
                                 sys.exit(1)
                 else:
-                        print "Unsupport Unix platfrom: " + platform.system() + " ,exiting"
+                        print crit + "Unsupport Unix platfrom: " + red + platform.system() + normal + " ,exiting\n"
                         sys.exit(1)
 
 # Function to collect and compair the NTP offset values
 def ntp_status_check():
-
         DEVNULL = open('/dev/null', 'w')
-        # Setting warning and critical threshold values
-        warning_value = 50
-        critical_value = 100
-
         # ntpq command Path value
         CMD_ntpq = '/usr/sbin/ntpq'
         # checking if the ntpq command exists
         if not os.path.isfile(CMD_ntpq):
-                print "NTP client binary not install, exiting"
+                print crit + "NTP client binary /usr/sbin/ntpq is missing , exiting\n"
                 sys.exit(1)
 
         # Collecting offset value for the selected NTP server '*'
@@ -69,14 +71,15 @@ def ntp_status_check():
         offset_value_selected_source = output.communicate()[0].rstrip()
         # if offset value if empty, exiting as needs to further investigate
         if not offset_value_selected_source:
-                print "Collection of NTP offset was unsucessfull, please check if the ntp is operating normally"
+                print crit + "Collection of NTP offset was unsucessfull, please check if the ntp is operating normally\n"
                 sys.exit(1)
         if float(offset_value_selected_source) > critical_value:
-                print "NTP offset reached its CRITICAL threshold, check ASAP!!"
+                print crit + "NTP offset: " + offset_value_selected_source +  " reached its CRITICAL threshold, check ASAP!!\n"
         elif float(offset_value_selected_source) > warning_value:
-                print "NTP offset crossed it WARNING threshold, you can take your time to check"
+                print warn + "NTP offset: " + offset_value_selected_source + " crossed it's WARNING threshold, you can take your time to check :)\n"
         else:
-                print "NTP offset is under CONTROL"
+                print info + "NTP offset: " + offset_value_selected_source + " is under CONTROL\n"
+        DEVNULL.close()
 
 
 if __name__ == "__main__":
