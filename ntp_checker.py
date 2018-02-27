@@ -14,6 +14,15 @@ import platform
 import sys
 import os
 from subprocess import *
+import datetime
+
+def display_date():
+        now = datetime.datetime.now()
+        timee = now.strftime("%Y-%m-%d %H:%M")
+        info = '[ INFO     ]: ' + timee
+        warn = '[ WARN\'g  ]: ' + timee
+        crit = '[ CRITICAL ]: ' + timee
+
 
 # Function to check if current distrubution and Release version is-line to estate (RHEL 6/7 & Solaris 10)
 def platform_check():
