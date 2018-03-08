@@ -77,10 +77,10 @@ def sdiff_fuction():
                                 global CMD_sdiff
                                 CMD_sdiff = '/usr/bin/sdiff -s -w 150 ' + filename_pre + " " + filename_current
                                 if call(CMD_sdiff, shell=True, stdout=DEVNULL,stderr=DEVNULL) == 1:
-                                        print '{0: <25}'.format(key) + "NOT OK"
+                                        print '{0: <25}'.format(key.strip('CMD_')) + "NOT OK"
                                         verbose_fun()
                                 else:
-                                        print '{0: <25}'.format(key) + "OK"
+                                        print '{0: <25}'.format(key.strip('CMD_')) + "OK"
 
 
 def verbose_fun():
