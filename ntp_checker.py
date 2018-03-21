@@ -2,7 +2,7 @@
 
 #######################################################################################
 #
-# Author : Lukesh Meshram - for UBS
+# Author : Lukesh Meshram
 # Date   : 27/02/2018
 # Purpose: To verify NTP is syncing correctly on RHEL 6/7 and Solaris 10 server.
 # Tested : Linux RHEL 6/7 and Solaris 10
